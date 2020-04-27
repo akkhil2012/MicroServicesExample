@@ -1,0 +1,2 @@
+# HTTP Server
+server.port: 2222   # HTTP (Tomcat) port  
