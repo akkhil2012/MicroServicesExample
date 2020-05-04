@@ -1,5 +1,7 @@
 package com.sample.IdentityMicroService;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +32,8 @@ public class IdentityResource {
 	@Autowired
 	private MyUserDetailService userDetailsService;
 	
+	
+	
 
 	String  jwt="";
 	
@@ -39,7 +43,7 @@ public class IdentityResource {
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
 		try {
 		authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(authenticationRequest.getUserName(),
+				new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
 				authenticationRequest.getPassword())
 				);
 		}catch(BadCredentialsException e) {
@@ -48,8 +52,10 @@ public class IdentityResource {
 		}
 		
 		
+		
+		
 		final UserDetails userDetails 
-		 = userDetailsService.loadUserByUsername(authenticationRequest.getUserName());
+		 = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		
 		 jwt = jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
@@ -61,15 +67,17 @@ public class IdentityResource {
 	
 	@PostMapping(value = "/fetchJwtToken")
 	//@ResponseStatus(HttpStatus.OK)
-    public String fetchUsersUserByID(@RequestBody AuthenticationRequest authenticationRequest) {
+    public String fetchUsersUserByID(HttpServletRequest request) {
+		String header = request.getHeader("Authorization");
+
+		if (header == null || !header.startsWith("Bearer ")) {
+           System.out.println("The JWT haeaer missing");
+        }
 		
-		final UserDetails userDetails 
-		 = userDetailsService.loadUserByUsername(authenticationRequest.getUserName());
-	   if(jwt!="") {
-		  if(jwtTokenUtil.validateToken(jwt, userDetails))
-			  return jwt;
-		}		  
-		return "";
+		System.out.println("The JWT haeaer :::" + header);
+		
+		return "authenticated............";
+		
 	}
 	
 }

@@ -18,8 +18,8 @@ public class JWTUserDetailsService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if ("akkhil".equals(username)) {
-			return new org.springframework.security.core.userdetails.User("akkhil", "akkhil",
+		if ("akhil".equals(username)) {
+			return new org.springframework.security.core.userdetails.User("akhil", "akhil",
 					new ArrayList<>());
 		} else {
 			throw new UsernameNotFoundException("User not found with username: " + username);

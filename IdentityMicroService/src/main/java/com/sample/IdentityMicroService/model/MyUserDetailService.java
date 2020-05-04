@@ -18,7 +18,7 @@ public class MyUserDetailService implements UserDetailsService{
  */
 		List authorities = new ArrayList<>();
 		
-		return new User("admin", "admin", authorities);
+		return new User("akhil", "akhil", authorities);
 	}
 
 }

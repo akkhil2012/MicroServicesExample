@@ -2,7 +2,7 @@ package com.sample.IdentityMicroService.model;
 
 public class AuthenticationRequest {
 		
-		private String userName;
+		private String username;
 		private String password;
 		
 		
@@ -11,21 +11,28 @@ public class AuthenticationRequest {
 		
 		
 		
+		public AuthenticationRequest(String username, String password) {
+			super();
+			this.username = username;
+			this.password = password;
+		}
+
+
 		public AuthenticationRequest() {
 			super();
 		}
 		
-		public AuthenticationRequest(String userName, String password) {
-			super();
-			this.userName = userName;
-			this.password = password;
+		
+		public String getUsername() {
+			return username;
 		}
-		public String getUserName() {
-			return userName;
+
+
+		public void setUsername(String username) {
+			this.username = username;
 		}
-		public void setUserName(String userName) {
-			this.userName = userName;
-		}
+
+
 		public String getPassword() {
 			return password;
 		}

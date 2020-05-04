@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.sample.approval.ApprovalMicroService.app.controller.ApprovalController;
+import com.sample.approval.ApprovalMicroService.app.controller.ApprovalResource;
 import com.sample.approval.ApprovalMicroService.model.User;
 import com.sample.approval.ApprovalMicroService.service.IApproval;
 import com.sample.approval.ApprovalMicroService.service.impl.ApprovalImpl;
@@ -25,7 +25,7 @@ public class ApprovalApplicationTest {
 	
 	
 	@InjectMocks
-	private ApprovalController approvalController;
+	private ApprovalResource approvalController;
 	
 	@Mock
 	private IApproval approvalService;
