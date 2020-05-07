@@ -44,16 +44,24 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        
+        
+        
+        /*
+         * Session
+         */
+        
+        
       //  User user = authenticationService.authenticate(token);
       //  request.setAttribute("user", user);
-        System.out.println("----------------- Token ---------------" + token);
+      //  System.out.println("----------------- Token ---------------" + token);
         
         //request.getUriInfo().getRequestUri().toString();
-        System.out.println("----------------- URL  ---------------" + request.getRequestURI().toString());
+     //   System.out.println("----------------- URL  ---------------" + request.getRequestURI().toString());
         
         Enumeration<String> headerNames = request.getHeaderNames();
 
-        List<String> builder = new ArrayList<>();
+       /* List<String> builder = new ArrayList<>();
         
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
@@ -68,12 +76,12 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             }
             builder.add("\"");
         }
-        
+       */ 
      //   System.out.println(" headers are: " + builder);
         
-        for(String t : builder) {
+       /* for(String t : builder) {
         	System.out.println(" --> " + t);
-        }
+        }*/
        SessionInfo sessionInfo = new SessionInfo();
        sessionInfo.setRequestedUrl(request.getRequestURL().toString());
         
@@ -88,6 +96,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
        
        sessionInfo.setTransactionId(transactionId);
        
+       /*
+        * Add tenant ID to session
+        */
+       sessionInfo.setTenantId(UUID.randomUUID().toString());
        
        SessionInfo.toHttpSession(servletRequest, sessionInfo);
        
@@ -96,7 +108,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
      //  sessionManager.setUserId(sessionInfo.getUserId());
        
        // sessionInfo.setHeaderParams(headerParams);
-System.out.println("Processing req for :: access Token>>>" + sessionInfo.getAccessToken()+"      URL>>>" + sessionInfo.getRequestedUrl() );
+
        
         return super.preHandle(request, response, handler);
     }

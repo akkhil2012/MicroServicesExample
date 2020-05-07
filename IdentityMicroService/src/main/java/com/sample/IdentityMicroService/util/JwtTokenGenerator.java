@@ -9,7 +9,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import io.jsonwebtoken.Claims;
@@ -63,12 +67,18 @@ public class JwtTokenGenerator {
 	    private Boolean isTokenExpired(String token) {
 	        return extractExpiration(token).before(new Date());
 	    }
-	    public String generateToken(UserDetails userDetails) {
+	    public String generateToken(UserDetails userDetails,Authentication authentication) {
 	        Map<String, Object> claims = new HashMap<>();
-	        return createToken(claims, userDetails.getUsername());
+	       
+	        return createToken(claims, userDetails.getUsername(),authentication);
 	    }
-	    private String createToken(Map<String, Object> claims, String subject) {
+	    private String createToken(Map<String, Object> claims, String subject,Authentication authentication) {
+	    	final String authorities = authentication.getAuthorities().stream()
+	                .map(GrantedAuthority::getAuthority)
+	                .collect(Collectors.joining(","));
+	    	
 	        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+	        		.claim("AUTHORITIES_KEY", authorities)
 	                 .setExpiration(new Date(System.currentTimeMillis() + 10000 * 60 * 60 * 10))
 	                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 	    }

@@ -17,6 +17,7 @@ public class MyUserDetailService implements UserDetailsService{
  * Im memory Authentication
  */
 		List authorities = new ArrayList<>();
+		//authorities.add("ADMIN");
 		
 		return new User("akhil", "akhil", authorities);
 	}

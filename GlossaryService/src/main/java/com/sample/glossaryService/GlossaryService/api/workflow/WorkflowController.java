@@ -6,14 +6,14 @@ import com.sample.glossaryService.GlossaryService.workflow.WdpApiModeledObject;
 import com.sample.glossaryService.GlossaryService.workflow.WorkflowableService;
 
 public class WorkflowController<ET extends ManagedEntity, MOT extends WdpApiModeledObject<ET>,
-RMOT extends WdpApiModeledObject<? extends ManagedEntity>, WST extends WorkflowableService<ET, MOT, RMOT>> {
+RMOT extends WdpApiModeledObject<? extends ManagedEntity>, WST extends WorkflowableService<ET, RMOT>> {
 
 	
 	private static WorkflowService workflowService=null;
 	
 	private Class<MOT> motClass; /// Why as Class.???
 	
-	public WorkflowController(WorkflowableService<ET, MOT, RMOT> workflowableService, Class<MOT> motClass) {
+	public WorkflowController(WorkflowableService<ET, RMOT> workflowableService, Class<MOT> motClass) {
 		this.workflowService = workflowService;
 		this.motClass = motClass;
 		// Workflowservice is called as many times its invoked

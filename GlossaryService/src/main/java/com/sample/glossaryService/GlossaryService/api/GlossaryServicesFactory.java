@@ -2,8 +2,9 @@ package com.sample.glossaryService.GlossaryService.api;
 
 import com.sample.glossaryService.GlossaryService.api.term.model.GlossaryServices;
 
-public interface GlossaryServicesProvider {
-
+public interface GlossaryServicesFactory {
+	GlobalService getGlobalService();
 	
-	GlossaryServices getGlossaryServices(String tenantId);
+	GlossaryServices createNewGlossaryServices(String tenantId);
+
 }

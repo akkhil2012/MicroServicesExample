@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.sample.IdentityMicroService.jwt.JwtRequestFilter;
 
 @EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	
@@ -35,11 +37,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.inMemoryAuthentication()
 		   .withUser("akhil")
 		   .password("akhil")
-		   .roles("USER")
-		   .and()
+		   .roles("USER");
+		   /*.and()
 		   .withUser("gupta")
 		   .password("gupta")
-		   .roles("ADMIN");
+		   .roles("ADMIN");*/
+		
+		auth.inMemoryAuthentication().withUser("gupta").password("gupta").roles("ADMIN");
 			
 		
 	}
@@ -64,6 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable()
 		  .authorizeRequests().antMatchers("/authenticate").permitAll()
+		  .antMatchers("/admin").access("hasRole('ADMIN')")
 		  .anyRequest().authenticated()
 		  .and().sessionManagement()
 		  .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

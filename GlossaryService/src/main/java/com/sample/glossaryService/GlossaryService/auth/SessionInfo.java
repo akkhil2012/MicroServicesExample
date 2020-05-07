@@ -9,6 +9,9 @@ import com.sample.glossaryService.GlossaryService.util.AuthConfiguration;
 public class SessionInfo implements ISessionInfo, Serializable{
 	
 	
+	private String tenantId;
+	
+
 	private String accessToken;
     private String requestedUrl;
     //used to record the operation
@@ -28,6 +31,15 @@ public class SessionInfo implements ISessionInfo, Serializable{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
+    
+    /**
+     * Sets the tenantId to use for processing this request.
+     */
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;        
+    }
 
 	
 	
@@ -53,6 +65,6 @@ public class SessionInfo implements ISessionInfo, Serializable{
 	@Override
 	public String getTenantId() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.tenantId;
 	}
 }

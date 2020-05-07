@@ -11,4 +11,8 @@ public interface ISessionInfo {
 	 
 	 String getTenantId();
 
+	void setTenantId(String string);
+	 
+	 
+
 }

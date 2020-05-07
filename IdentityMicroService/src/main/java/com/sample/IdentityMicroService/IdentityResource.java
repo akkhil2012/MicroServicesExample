@@ -4,9 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,22 +44,21 @@ public class IdentityResource {
 	@PostMapping(value="/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
 		try {
-		authenticationManager.authenticate(
+			final Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
 				authenticationRequest.getPassword())
 				);
+			final UserDetails userDetails 
+			 = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+			
+			//  synchronized (IdentityResource.class) {
+				 // Thread.currentThread().sleep(400);
+			     jwt = jwtTokenUtil.generateToken(userDetails,authentication);
+			  //}
 		}catch(BadCredentialsException e) {
 			System.out.println(" >>> "+ authenticationManager +"  -------------  " + e.getMessage());
 			throw new Exception();
 		}
-		
-		
-		
-		
-		final UserDetails userDetails 
-		 = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		
-		 jwt = jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 		
 	}
@@ -65,8 +66,8 @@ public class IdentityResource {
 	
 	
 	
-	@PostMapping(value = "/fetchJwtToken")
-	//@ResponseStatus(HttpStatus.OK)
+	@PostMapping(value = "/admin/fetchJwtToken")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public String fetchUsersUserByID(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
 
